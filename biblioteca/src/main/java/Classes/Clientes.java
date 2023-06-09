@@ -1,6 +1,9 @@
 package Classes;
 
-public class Clientes {
+import java.util.Observable;
+import java.util.Observer;
+
+public class Clientes implements Observer {
     private int id;
     private String nome;
     private String cpf;
@@ -45,6 +48,11 @@ public class Clientes {
 
     public void setFone(String fone) {
         this.fone = fone;
-    }  
+    }
+
+	@Override
+	public void update(Observable o, Object arg) {
+		System.out.println(this.nome + ", o livro " + arg + " está disponível na nossa biblioteca");
+	}  
     
 }

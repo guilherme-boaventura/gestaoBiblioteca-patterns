@@ -1,3 +1,4 @@
+
 package App;
 
 import Classes.Biblioteca;
@@ -253,6 +254,15 @@ public class Principal {
         liv.setAutor(JOptionPane.showInputDialog("Autor do Livro:"));
         liv.setDescricao(JOptionPane.showInputDialog("Descrição do Livro:"));
         liv.setTotal(Integer.parseInt(JOptionPane.showInputDialog("Quantidade deste exemplar:")));
+        
+        Clientes cli;
+        for (int i=0;i<biblio.getQuant2();i++){
+         cli = biblio.getCliente(i);
+         liv.addObserver(cli);
+         liv.notifyObservers(liv.getTitulo());
+        }
+        
+        
         return liv;
     }
        
@@ -305,6 +315,12 @@ public class Principal {
         cli.setCpf(JOptionPane.showInputDialog("CPF do Usurio: "));
         cli.setNome(JOptionPane.showInputDialog("Nome do Usuário: "));
         cli.setFone(JOptionPane.showInputDialog("´Telefone do Usuário: "));
+        
+        Livros livro;
+        for (int i=0;i<biblio.getQuantidade();i++){
+          livro = biblio.getLivro(i);
+          livro.addObserver(cli);
+        }
         return cli;
     }
        

@@ -1,7 +1,8 @@
 package Classes;
 
-public class Livros 
-    {
+import java.util.Observable;
+
+public class Livros extends Observable {
     private int codigo;
     private String titulo;
     private String autor;
@@ -51,6 +52,12 @@ public class Livros
 
     
     public void setTotal(int total)
-    { this.total = total; }
+    { this.total = total;}
+
+    @Override
+    public void notifyObservers(Object arg){
+    	this.setChanged();
+    	super.notifyObservers(arg);
+    }
    
 }
