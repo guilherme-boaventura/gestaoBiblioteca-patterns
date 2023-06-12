@@ -82,7 +82,7 @@ public class Emprestimo {
 		}
 		return 0.0f;
 	}
-
+//modifiquei
 	public MultaStrategy obterStrategyMulta() {
 		if (tipoMulta.equalsIgnoreCase("fixa")) {
 			return new MultaFixaStrategy();

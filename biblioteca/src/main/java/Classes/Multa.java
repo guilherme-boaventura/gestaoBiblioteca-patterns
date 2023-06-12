@@ -12,7 +12,7 @@ public class Multa {
 		this.strategy = strategy;
 		this.valor = valor;
 	}
-
+//a
 	public Multa() {
 	}
 
