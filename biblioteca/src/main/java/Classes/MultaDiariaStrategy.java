@@ -7,13 +7,11 @@ public class MultaDiariaStrategy implements MultaStrategy {
 	public MultaDiariaStrategy(int atraso) {
 		this.atraso = atraso;
 	}
-	
-	 public MultaDiariaStrategy() {
-	        
-	    }
 
+	public MultaDiariaStrategy() {
 
-	@Override
+	}
+
 	public float calcularMulta(String dataDevolucao) {
 
 		return MULTA_DIARIA * atraso;

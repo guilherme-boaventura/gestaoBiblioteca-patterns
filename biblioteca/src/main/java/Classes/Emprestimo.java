@@ -75,4 +75,22 @@ public class Emprestimo {
 		this.data_devolucao = data_devolucao;
 	}
 
+	public float calcularMulta() {
+		MultaStrategy strategy = obterStrategyMulta();
+		if (strategy != null) {
+			return strategy.calcularMulta(data_devolucao);
+		}
+		return 0.0f;
+	}
+
+	public MultaStrategy obterStrategyMulta() {
+		if (tipoMulta.equalsIgnoreCase("fixa")) {
+			return new MultaFixaStrategy();
+		} else if (tipoMulta.equalsIgnoreCase("diaria")) {
+
+			return new MultaDiariaStrategy();
+		}
+
+		return null;
+	}
 }

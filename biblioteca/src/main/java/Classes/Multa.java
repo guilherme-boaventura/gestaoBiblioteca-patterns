@@ -15,13 +15,14 @@ public class Multa {
 
 	public Multa() {
 	}
-	public  MultaStrategy getStrategy() {
+
+	public MultaStrategy getStrategy() {
 		return strategy;
 	}
-	
+
 	public void setStrategy(MultaStrategy strategy) {
-        this.strategy = strategy;
-    }
+		this.strategy = strategy;
+	}
 
 	public float calcularMulta(String dataDevolucao) {
 		if (strategy != null) {

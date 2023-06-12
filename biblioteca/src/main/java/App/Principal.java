@@ -235,8 +235,9 @@ public class Principal {
 		for (int i = 0; i < biblio.getQuant2(); i++) {
 			cli = biblio.getCliente(i);
 			liv.addObserver(cli);
-			liv.notifyObservers(liv.getTitulo());
+
 		}
+		liv.notifyObservers(liv.getTitulo());
 
 		return liv;
 	}
@@ -343,7 +344,7 @@ public class Principal {
 
 		Date dataDevolucao = new Date();
 		// Adiciona + 10 à data atual
-		dataDevolucao.setDate(dataDevolucao.getDate() + 14);
+		dataDevolucao.setDate(dataDevolucao.getDate() - 2);
 		// String dataDevolucaoFormatada = formataData.format(dataDevolucao);
 		empre.setData_devolucao(formataData.format(dataDevolucao));
 		JOptionPane.showMessageDialog(null, "Data da Devolução: " + empre.getData_devolucao());
@@ -413,24 +414,22 @@ public class Principal {
 
 	// MULTA
 	static void ListaMulta(Biblioteca biblio) throws ParseException {
-		Multa multa = new Multa();
+		Multa multa;
 		Emprestimo empre;
 		Date datahoje = new Date();
 		SimpleDateFormat formataData = new SimpleDateFormat("dd/MM/yyyy");
-		// String s = formataData.format( data );
+
 		for (int i = 0; i < biblio.getQuant3(); i++) {
-
-			if (biblio.getEmprestimo(i).getId_emprestimo() == -1)
-				i++;
-			else {
+			if (biblio.getEmprestimo(i).getId_emprestimo() != -1) {
 				empre = biblio.getEmprestimo(i);
-
 				Date dataDevo = formataData.parse(empre.getData_devolucao());
 
-				if (empre.getId_emprestimo() >= 0)
-					if (dataDevo.before(datahoje)) {
-						biblio.incluirMulta(DigitarMulta(biblio, empre));
-					}
+				if (empre.getId_emprestimo() >= 0 && dataDevo.before(datahoje)) {
+					multa = new Multa();
+					multa.setStrategy(empre.obterStrategyMulta());
+
+					biblio.incluirMulta(multa, empre.getData_devolucao());
+				}
 			}
 		}
 		StringBuilder lista = new StringBuilder();
@@ -451,7 +450,7 @@ public class Principal {
 
 		// Utilize a estratégia correta para calcular o valor da multa
 		MultaStrategy strategy;
-		if (empre.getTipoMulta().equals("Fixa")) {
+		if (empre.getTipoMulta().equalsIgnoreCase("Fixa")) {
 			strategy = new MultaFixaStrategy();
 		} else {
 			strategy = new MultaDiariaStrategy();
@@ -465,21 +464,19 @@ public class Principal {
 	}
 
 	static void PagarMulta(Biblioteca biblio) {
-		Multa multa;
-		multa = biblio.obterMulta(Integer.parseInt(JOptionPane.showInputDialog("Código de Acesso do Leitor:")));
-		int aux = 0, op = 0;
-		while (aux == 1) {
-			if (multa != null) {
-				JOptionPane.showMessageDialog(null, "Multa paga com sucesso", "Ações: ", JOptionPane.WARNING_MESSAGE);
-				multa.setId_multa(0);
-				multa.setId_cliente(0);
-				multa.setValor(0);
-				aux = 1;
-			} else {
-				JOptionPane.showMessageDialog(null, "Leitor não possui multa!");
-				op = Integer.parseInt(JOptionPane.showInputDialog("Informe 0 caso deseje retornar ao menu Ações"));
-				if (op == 0)
-					break;
+		int codigoAcesso = Integer.parseInt(JOptionPane.showInputDialog("Código de Acesso do Leitor:"));
+		Multa multa = biblio.obterMulta(codigoAcesso);
+
+		if (multa != null) {
+			JOptionPane.showMessageDialog(null, "Multa paga com sucesso", "Ações: ", JOptionPane.WARNING_MESSAGE);
+			multa.setId_multa(0);
+			multa.setId_cliente(0);
+			multa.setValor(0);
+		} else {
+			JOptionPane.showMessageDialog(null, "Leitor não possui multa!");
+			int op = Integer.parseInt(JOptionPane.showInputDialog("Informe 0 caso deseje retornar ao menu Ações"));
+			if (op != 0) {
+				PagarMulta(biblio);
 			}
 		}
 	}
