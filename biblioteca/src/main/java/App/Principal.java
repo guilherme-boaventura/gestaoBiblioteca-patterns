@@ -462,6 +462,7 @@ public class Principal {
 
 		return multa;
 	}
+
 //modifiquei mas bugou o commit, comentando para atualizar
 	static void PagarMulta(Biblioteca biblio) {
 		int codigoAcesso = Integer.parseInt(JOptionPane.showInputDialog("Código de Acesso do Leitor:"));
